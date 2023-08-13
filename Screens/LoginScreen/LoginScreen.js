@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+
 import {
   View,
   ImageBackground,
@@ -25,7 +27,8 @@ import {
   registrationButtonText,
 } from "./LoginScreenStyle";
 
-export const LoginScreen = () => {
+const LoginScreen = () => {
+  const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
@@ -40,7 +43,7 @@ export const LoginScreen = () => {
     }
 
     console.log({ email, password });
-
+    navigation.navigate("Home", { user: { email, password } });
     clearUserForm();
   };
 
@@ -66,6 +69,7 @@ export const LoginScreen = () => {
                     autoComplete="email"
                     value={email}
                     onChangeText={setEmail}
+                    
                   />
                 </View>
                 <View style={{ marginBottom: 43, position: "relative" }}>
@@ -85,15 +89,21 @@ export const LoginScreen = () => {
                       setShowPassword((prevState) => !prevState)
                     }
                   >
-                    <Text style={passwordButtonText}>Показати</Text>
+                    <Text style={passwordButtonText}>
+                      {showPassword ? "Показати" : "Сховати"}
+                    </Text>
                   </TouchableOpacity>
                 </View>
+
                 <TouchableOpacity style={button} onPress={onSubmitUserLogin}>
                   <Text style={buttonText}>Увійти</Text>
                 </TouchableOpacity>
               </View>
 
-              <TouchableOpacity style={registrationButton}>
+              <TouchableOpacity
+                style={registrationButton}
+                onPress={() => navigation.navigate("Registration")}
+              >
                 <Text style={registrationButtonText}>
                   Немає акаунту?
                   <Text style={{ textDecorationLine: "underline" }}>
@@ -108,3 +118,4 @@ export const LoginScreen = () => {
     </TouchableWithoutFeedback>
   );
 };
+export default LoginScreen;

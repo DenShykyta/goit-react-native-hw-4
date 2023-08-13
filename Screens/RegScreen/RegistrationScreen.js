@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 import {
   View,
@@ -29,7 +30,8 @@ import {
 } from "./RegScreenStyles";
 import { AntDesign } from "@expo/vector-icons";
 
-export const RegistrationScreen = () => {
+const RegistrationScreen = () => {
+  const navigation = useNavigation();
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -48,7 +50,7 @@ export const RegistrationScreen = () => {
     }
 
     console.log({ login, email, password });
-
+    navigation.navigate("Home", { user: { login, email, password } });
     clearUserForm();
   };
   return (
@@ -104,7 +106,9 @@ export const RegistrationScreen = () => {
                       setShowPassword((prevState) => !prevState)
                     }
                   >
-                    <Text style={showPasswordButtonText}>Показати</Text>
+                    <Text style={showPasswordButtonText}>
+                      {showPassword ? "Показати" : "Сховати"}
+                    </Text>
                   </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={button} onPress={onSubmitUserRegister}>
@@ -112,7 +116,7 @@ export const RegistrationScreen = () => {
                 </TouchableOpacity>
               </View>
 
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
                 <Text style={logInText}>Вже є акаунт? Увійти</Text>
               </TouchableOpacity>
             </View>
@@ -122,3 +126,4 @@ export const RegistrationScreen = () => {
     </TouchableWithoutFeedback>
   );
 };
+export default RegistrationScreen;
